@@ -1,0 +1,304 @@
+---
+import Base from "@/layouts/Base.astro";
+import Icon from "@/components/Icon.astro";
+import GuidedInstaller from "@/components/GuidedInstaller.astro";
+import { features, compareRows, clientApps, links, heroBadges, site } from "@/data/site";
+---
+
+<Base>
+  {/* ---------------------------------------------------------------- Hero */}
+  <section class="relative overflow-hidden">
+    <div class="hero-aurora pointer-events-none absolute inset-x-0 top-0 h-[640px] opacity-70"></div>
+    <div
+      class="pointer-events-none absolute inset-x-0 top-0 h-[640px]"
+      style="background-image: linear-gradient(to bottom, transparent 55%, var(--color-neutral) 100%);"
+    >
+    </div>
+    <div class="container-page relative py-20 text-center sm:py-28">
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-border bg-neutral-highlight/50 px-4 py-1.5 text-xs font-medium text-brand-light"
+      >
+        <Icon name="zap" size={14} />
+        A rebuild, not another fork
+      </span>
+
+      <h1 class="mx-auto mt-6 max-w-3xl text-4xl font-bold leading-[1.1] sm:text-6xl">
+        Stream your PC to{" "}
+        <span class="text-brand-light">any screen</span>
+      </h1>
+
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-secondary">
+        {site.description}
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="/install"
+          class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-base font-semibold text-main shadow-xl shadow-brand/30 transition-transform hover:scale-[1.03] hover:bg-brand-light"
+        >
+          <Icon name="download" size={18} />
+          Install Punktfunk
+        </a>
+        <a
+          href="#compare"
+          class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-base font-semibold text-main transition-colors hover:border-brand-light hover:bg-neutral-highlight/50"
+        >
+          Why it's different
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+
+      <ul class="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-secondary">
+        {
+          heroBadges.map((b) => (
+            <li class="flex items-center gap-2">
+              <Icon name="check" size={16} class="text-success" />
+              {b}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* ------------------------------------------------- Rebuild, not a fork */}
+  <section class="container-page py-8">
+    <div
+      data-reveal
+      class="grid gap-8 rounded-[var(--radius-card)] border border-border bg-neutral-accent/50 p-8 sm:grid-cols-2 sm:p-10"
+    >
+      <div>
+        <h2 class="text-2xl font-semibold sm:text-3xl">
+          Not another fork of NVIDIA's old code
+        </h2>
+        <p class="mt-4 text-secondary">
+          Most self-hosted streaming still runs on GameStream — a protocol NVIDIA
+          abandoned — passed down through fork after fork. Punktfunk starts over:
+          a single, modern codebase written in Rust, shared by the host and every
+          app. One fix lands everywhere at once.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          [
+            { icon: "rocket", t: "Rust from the ground up", d: "One core carries the protocol, encryption and error correction — on every platform." },
+            { icon: "monitor-cog", t: "Native host & clients", d: "Purpose-built apps, not a single community client bolted on." },
+            { icon: "shield-check", t: "First-class Linux & Windows", d: "Both are real hosts with their own display drivers — not one afterthought." },
+            { icon: "heart", t: "Free, always", d: "Open source under MIT / Apache-2.0. No accounts, no paywall." },
+          ].map((item) => (
+            <div class="rounded-2xl border border-border bg-neutral p-5">
+              <Icon name={item.icon} size={22} class="text-brand-light" />
+              <h3 class="mt-3 text-base font-semibold text-main">{item.t}</h3>
+              <p class="mt-1.5 text-sm text-secondary">{item.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* --------------------------------------------------------- Features */}
+  <section id="features" class="container-page scroll-mt-24 py-20">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold sm:text-4xl">Everything you'd want, in plain terms</h2>
+      <p class="mt-4 text-secondary">
+        No jargon. Here's what Punktfunk actually does for you.
+      </p>
+    </div>
+
+    <div data-reveal class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        features.map((f) => (
+          <div class="group rounded-2xl border border-border bg-neutral-accent/40 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-brand-light/50 hover:bg-neutral-accent/70">
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand/15 text-brand-light transition-colors group-hover:bg-brand/25">
+              <Icon name={f.icon} size={22} />
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-main">{f.title}</h3>
+            <p class="mt-2 text-sm text-secondary">{f.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* --------------------------------------------------- Controller spotlight */}
+  <section class="container-page py-8">
+    <div
+      data-reveal
+      class="relative overflow-hidden rounded-[var(--radius-card)] border border-border bg-gradient-to-br from-neutral-highlight/60 to-neutral-accent/40 p-8 sm:p-12"
+    >
+      <div class="glow pointer-events-none absolute -right-20 -top-20 h-72 w-72 opacity-60"></div>
+      <div class="relative grid items-center gap-8 lg:grid-cols-[1.3fr_1fr]">
+        <div>
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand/20 text-brand-light">
+            <Icon name="gamepad-2" size={26} />
+          </div>
+          <h2 class="mt-5 text-2xl font-bold sm:text-3xl">
+            Made for modern controllers
+          </h2>
+          <p class="mt-4 max-w-xl text-secondary">
+            Punktfunk speaks the language of today's gamepads. The
+            <strong class="text-main"> Steam Controller 2</strong> and the
+            <strong class="text-main"> DualSense</strong> both work out of the box —
+            and the DualSense's rumble motors and built-in speaker are streamed
+            all the way to the pad in your hands, so games feel and sound the way
+            they were meant to.
+          </p>
+        </div>
+        <ul class="space-y-3">
+          {
+            [
+              "Steam Controller 2 support",
+              "DualSense haptics & speaker",
+              "Guide button & quick-access menus",
+              "Works wired or wireless",
+            ].map((item) => (
+              <li class="flex items-center gap-3 rounded-xl border border-border bg-neutral/60 px-4 py-3 text-sm text-main">
+                <Icon name="check" size={18} class="text-success" />
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {/* ----------------------------------------------------------- Compare */}
+  <section id="compare" class="container-page scroll-mt-24 py-20">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold sm:text-4xl">
+        Why Punktfunk over Sunshine, Moonlight & the forks
+      </h2>
+      <p class="mt-4 text-secondary">
+        The Sunshine family (Apollo, Vibeshine and friends) are Moonlight hosts
+        built on old code. Here's the honest difference.
+      </p>
+    </div>
+
+    <div data-reveal class="mx-auto mt-12 max-w-4xl overflow-hidden rounded-2xl border border-border">
+      <div
+        class="grid grid-cols-[1fr_1fr] gap-px bg-border text-sm sm:grid-cols-[0.8fr_1fr_1fr]"
+      >
+        <div class="hidden bg-neutral-accent px-5 py-4 font-semibold text-secondary sm:block"></div>
+        <div class="bg-neutral-accent px-5 py-4 font-semibold text-secondary">
+          Sunshine / Moonlight / forks
+        </div>
+        <div class="bg-neutral-highlight px-5 py-4 font-semibold text-brand-light">
+          Punktfunk
+        </div>
+
+        {
+          compareRows.map((row) => (
+            <>
+              <div class="hidden bg-neutral px-5 py-4 font-medium text-main sm:block">
+                {row.point}
+              </div>
+              <div class="bg-neutral px-5 py-4 text-secondary">
+                <span class="mb-1 block font-medium text-main sm:hidden">{row.point}</span>
+                {row.others}
+              </div>
+              <div class="bg-neutral px-5 py-4 text-main">
+                <span class="flex gap-2">
+                  <Icon name="check" size={17} class="mt-0.5 shrink-0 text-success" />
+                  <span>{row.punktfunk}</span>
+                </span>
+              </div>
+            </>
+          ))
+        }
+      </div>
+    </div>
+
+    <p class="mx-auto mt-5 max-w-4xl text-center text-sm text-secondary">
+      Coming from Sunshine or Apollo? You can run both side by side while you try
+      it — see the{" "}
+      <a href={`${links.docs}/docs/switching-from-sunshine`} class="text-brand-light underline underline-offset-2">switching guide</a>.
+    </p>
+  </section>
+
+  {/* --------------------------------------------------------- Installer */}
+  <section class="container-page scroll-mt-24 py-12">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold sm:text-4xl">Set it up in one step</h2>
+      <p class="mt-4 text-secondary">
+        Tell us what you're streaming from and copy the command. That's it.
+      </p>
+    </div>
+    <div data-reveal class="mx-auto mt-10 max-w-3xl">
+      <GuidedInstaller />
+      <div class="mt-4 text-center">
+        <a
+          href="/install"
+          class="inline-flex items-center gap-2 text-sm font-medium text-brand-light hover:text-main"
+        >
+          Full host &amp; client guides, and the mobile apps
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------------------------------------------------------- Clients */}
+  <section class="container-page py-20">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold sm:text-4xl">Play on every screen you own</h2>
+      <p class="mt-4 text-secondary">
+        Native apps for the devices you already have. Each one finds your host
+        automatically and pairs once with a PIN.
+      </p>
+    </div>
+
+    <div data-reveal class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        clientApps.map((c) => (
+          <div class="flex items-start gap-4 rounded-2xl border border-border bg-neutral-accent/40 p-5 transition-all duration-200 hover:-translate-y-1 hover:border-brand-light/40">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-neutral-highlight text-main">
+              <img src={`/os-icons/${c.os}.svg`} alt="" width="22" height="22" class="h-[22px] w-[22px]" />
+            </div>
+            <div>
+              <h3 class="text-base font-semibold text-main">{c.device}</h3>
+              <p class="mt-1 text-sm text-secondary">{c.how}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ------------------------------------------------------------- Links CTA */}
+  <section class="container-page pb-24">
+    <div
+      class="relative overflow-hidden rounded-[var(--radius-card)] border border-border bg-neutral-accent/60 p-10 text-center sm:p-14"
+    >
+      <div class="glow pointer-events-none absolute inset-x-0 top-0 h-60"></div>
+      <div class="relative">
+        <h2 class="text-3xl font-bold sm:text-4xl">Ready when you are</h2>
+        <p class="mx-auto mt-4 max-w-xl text-secondary">
+          Free and open source. Dive into the code, read the docs, or say hello to
+          the community.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a
+            href="/install"
+            class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-semibold text-main transition-transform hover:scale-[1.03] hover:bg-brand-light"
+          >
+            <Icon name="download" size={18} /> Install now
+          </a>
+          <a href={links.source} class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
+            <Icon name="github" size={18} /> Source code
+          </a>
+          <a href={links.docs} class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
+            <Icon name="book-open" size={18} /> Docs
+          </a>
+          <a href={links.discord} class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
+            <Icon name="message-circle" size={18} /> Community
+          </a>
+          <a href={links.sponsors} class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
+            <Icon name="heart" size={18} /> Sponsors
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

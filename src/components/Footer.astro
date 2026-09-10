@@ -1,0 +1,95 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { links, site } from "@/data/site";
+
+const groups = [
+  {
+    heading: "Get started",
+    items: [
+      { label: "Install the host", href: "/install" },
+      { label: "Connect a client", href: "/install#clients" },
+      { label: "Quick start", href: links.quickstart },
+      { label: "What works where", href: links.supportMatrix },
+    ],
+  },
+  {
+    heading: "Project",
+    items: [
+      { label: "Source code", href: links.source },
+      { label: "Documentation", href: links.docs },
+      { label: "Sponsors", href: links.sponsors },
+    ],
+  },
+  {
+    heading: "Community",
+    items: [
+      { label: "Discord", href: links.discord },
+      { label: "Reddit", href: links.reddit },
+    ],
+  },
+];
+---
+
+<footer class="border-t border-border bg-neutral-accent">
+  <div class="container-page py-14">
+    <div class="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+      <div>
+        <Logo class="h-7 w-auto" />
+        <p class="mt-4 max-w-xs text-sm text-secondary">
+          {site.description}
+        </p>
+        <div class="mt-5 flex gap-2">
+          <a
+            href={links.source}
+            class="rounded-full border border-border p-2.5 text-secondary transition-colors hover:border-brand hover:text-main"
+            aria-label="Source code"
+          >
+            <Icon name="github" size={18} />
+          </a>
+          <a
+            href={links.discord}
+            class="rounded-full border border-border p-2.5 text-secondary transition-colors hover:border-brand hover:text-main"
+            aria-label="Discord"
+          >
+            <Icon name="message-circle" size={18} />
+          </a>
+          <a
+            href={links.sponsors}
+            class="rounded-full border border-border p-2.5 text-secondary transition-colors hover:border-brand hover:text-main"
+            aria-label="Sponsors"
+          >
+            <Icon name="heart" size={18} />
+          </a>
+        </div>
+      </div>
+
+      {
+        groups.map((group) => (
+          <div>
+            <h3 class="text-sm font-semibold text-main">{group.heading}</h3>
+            <ul class="mt-4 space-y-2.5">
+              {group.items.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    class="text-sm text-secondary transition-colors hover:text-main"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-12 flex flex-col gap-2 border-t border-border pt-6 text-xs text-secondary sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>© {new Date().getFullYear()} Punktfunk · An unom project. Free and open source (MIT / Apache-2.0).</p>
+      <p>Not affiliated with NVIDIA, Valve, Sony or Microsoft.</p>
+    </div>
+  </div>
+</footer>

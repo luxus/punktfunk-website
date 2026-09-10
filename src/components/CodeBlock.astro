@@ -1,0 +1,44 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  label?: string;
+  code: string | readonly string[];
+}
+const { label, code } = Astro.props;
+const lines = Array.isArray(code) ? code : [code];
+const joined = lines.join("\n");
+---
+
+<div class="overflow-hidden rounded-xl border border-border bg-neutral">
+  <div class="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
+    <span class="text-xs font-semibold uppercase tracking-wide text-secondary">
+      {label ?? "Terminal"}
+    </span>
+    <button
+      type="button"
+      class="copy-code inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-secondary transition-colors hover:bg-neutral-highlight hover:text-main"
+      data-copy={joined}
+    >
+      <Icon name="copy" size={13} /> Copy
+    </button>
+  </div>
+  <pre class="overflow-x-auto px-4 py-3 text-sm leading-relaxed text-main"><code>{lines.join("\n")}</code></pre>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>(".copy-code").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? "");
+        const prev = btn.textContent;
+        btn.textContent = "Copied";
+        setTimeout(() => {
+          btn.textContent = prev;
+        }, 1500);
+      } catch {
+        /* clipboard unavailable */
+      }
+    });
+  });
+</script>
