@@ -2,6 +2,7 @@
 import Base from "@/layouts/Base.astro";
 import Icon from "@/components/Icon.astro";
 import OsIcon from "@/components/OsIcon.astro";
+import BrandMark from "@/components/BrandMark.astro";
 import FecLattice from "@/components/FecLattice.astro";
 import ResolutionCycler from "@/components/ResolutionCycler.astro";
 import ResumeTimeline from "@/components/ResumeTimeline.astro";
@@ -79,7 +80,9 @@ const streamBars = [62, 88, 45, 76, 95, 58, 82, 70, 92, 50, 77, 66];
             href="/install"
             class="btn-beam inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-base font-semibold text-main shadow-xl shadow-brand/30 transition-transform hover:scale-[1.03] hover:bg-brand-light"
           >
-            <Icon name="download" size={18} />
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-white/20">
+              <BrandMark class="size-4" />
+            </span>
             Install Punktfunk
           </a>
           <a
@@ -494,7 +497,9 @@ const streamBars = [62, 88, 45, 76, 95, 58, 82, 70, 92, 50, 77, 66];
           href="/install#host"
           class="btn-beam inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-base font-semibold text-main shadow-xl shadow-brand/30 transition-transform hover:scale-[1.03] hover:bg-brand-light"
         >
-          <Icon name="download" size={18} />
+          <span class="flex h-6 w-6 items-center justify-center rounded-full bg-white/20">
+            <BrandMark class="size-4" />
+          </span>
           Install the host
         </a>
         <a
@@ -554,7 +559,10 @@ const streamBars = [62, 88, 45, 76, 95, 58, 82, 70, 92, 50, 77, 66];
             href="/install"
             class="btn-beam inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-semibold text-main transition-transform hover:scale-[1.03] hover:bg-brand-light"
           >
-            <Icon name="download" size={18} /> Install now
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-white/20">
+              <BrandMark class="size-4" />
+            </span>
+            Install now
           </a>
           <a href={links.source} class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
             <Icon name="git-branch" size={18} /> Source code

@@ -1,0 +1,25 @@
+---
+/**
+ * Full punktfunk lockup: the lens mark beside the FUNK wordmark, like the
+ * previous site's header (BrandMark size-8/9 + Wordmark h-5/6). Sizes via
+ * markClass / wordClass; wordmark renders in text-highlight.
+ */
+import BrandMark from "./BrandMark.astro";
+import Wordmark from "./Wordmark.astro";
+
+interface Props {
+  class?: string;
+  markClass?: string;
+  wordClass?: string;
+}
+const {
+  class: className = "inline-flex items-center gap-2.5",
+  markClass = "size-9",
+  wordClass = "h-6",
+} = Astro.props;
+---
+
+<span class={className}>
+  <BrandMark class={markClass} />
+  <Wordmark class={`w-auto text-highlight ${wordClass}`} />
+</span>

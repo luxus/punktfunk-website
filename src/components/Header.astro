@@ -1,8 +1,8 @@
 ---
-import Logo from "./Logo.astro";
+import LogoLockup from "./LogoLockup.astro";
+import BrandMark from "./BrandMark.astro";
 import Icon from "./Icon.astro";
 import { links } from "@/data/site";
-
 const nav = [
   { label: "Features", href: "/#features" },
   { label: "Why Punktfunk", href: "/#compare" },
@@ -16,7 +16,7 @@ const nav = [
 >
   <div class="container-page flex h-[var(--spacing-header)] items-center justify-between gap-4">
     <a href="/" class="flex items-center gap-2.5" aria-label="Punktfunk home">
-      <Logo class="h-7 w-auto" />
+      <LogoLockup />
     </a>
 
     <nav class="hidden items-center gap-7 md:flex" aria-label="Primary">
@@ -44,7 +44,9 @@ const nav = [
         href="/install"
         class="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-sm font-semibold text-main shadow-lg shadow-brand/25 transition-transform hover:scale-[1.03] hover:bg-brand-light"
       >
-        <Icon name="download" size={16} />
+        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+          <BrandMark class="size-3.5" />
+        </span>
         Get Punktfunk
       </a>
       <button
