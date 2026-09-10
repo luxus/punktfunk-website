@@ -1,0 +1,20 @@
+Game-library / launcher marks in this directory are monochrome
+`currentColor` SVGs, rendered by `src/components/OsIcon.astro` with
+`dir="launcher-icons"`. Per-file provenance is also kept in each SVG's
+header comment. Upstream sources and licenses:
+
+- epic.svg — Epic Games logo, from Simple Icons (CC0 1.0),
+  slug `epicgames`.
+- gog.svg — GOG logo, from Simple Icons (CC0 1.0), slug `gogdotcom`.
+- heroic.svg — Heroic Games Launcher logo, from Simple Icons (CC0 1.0),
+  slug `heroicgameslauncher`.
+- lutris.svg — Lutris logo, from Simple Icons (CC0 1.0), slug `lutris`.
+- playnite.svg — Playnite logo, from `media/playnite-logo-black.svg` in
+  JosefNemec/Playnite (MIT).
+- steam.svg — Steam logo, from Font Awesome Free 5 brands (CC BY 4.0).
+- xbox.svg — Xbox logo, from Font Awesome Free 6 brands (CC BY 4.0),
+  `fa-xbox`.
+
+License texts: CC0 1.0 <https://creativecommons.org/publicdomain/zero/1.0/>,
+CC BY 4.0 <https://creativecommons.org/licenses/by/4.0/>,
+MIT <https://opensource.org/licenses/MIT>.

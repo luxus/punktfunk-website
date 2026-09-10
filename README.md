@@ -52,10 +52,10 @@ The site outputs static files to `dist/`. Cloudflare Pages is wired to this
 repository and rebuilds automatically on pushes to `main`
 (build command `bun run build`, output directory `dist`).
 
-Keep `bun.lock` at lockfile v1 (regenerate with Bun 1.2.x): Cloudflare's
-build image defaults to Bun 1.2.x, which cannot read v2 lockfiles and fails
-with `Unknown lockfile version`. Verify with `bun install --frozen-lockfile`
-on Bun 1.2.x before pushing dependency changes.
+The build toolchain is Bun 1.4.x (both locally and on Cloudflare), matching
+the v2 `bun.lock`. If Cloudflare ever falls back to its default Bun 1.2.x,
+installs fail with `Unknown lockfile version` — either re-pin `BUN_VERSION`
+in the project settings or regenerate the lockfile with Bun 1.2.x.
 
 ## Branding & licenses
 

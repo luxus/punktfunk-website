@@ -1,0 +1,35 @@
+Brand marks in this directory are monochrome `currentColor` SVGs, inlined by
+`src/components/OsIcon.astro` so they inherit the surrounding text color.
+Per-file provenance is also kept in each SVG's header comment. Upstream
+sources and licenses:
+
+- apple.svg — Apple logo, from Font Awesome Free 5 brands (CC BY 4.0),
+  via react-icons `FaApple`.
+- arch.svg — Arch Linux logo, from Simple Icons (CC0 1.0),
+  via react-icons `SiArchlinux`.
+- bazzite.svg — Bazzite "b", lifted from `repo_content/Bazzite.svg` in
+  ublue-os/bazzite (Apache-2.0) and normalized to a 24x24 box.
+- cachyos.svg — CachyOS logo, from Simple Icons (CC0 1.0).
+- debian.svg — Debian swirl, from Simple Icons (CC0 1.0),
+  via react-icons `SiDebian`.
+- fedora.svg — Fedora logo, from Font Awesome Free 5 brands (CC BY 4.0),
+  via react-icons `FaFedora`.
+- linux.svg — Tux, from Font Awesome Free 5 brands (CC BY 4.0),
+  via react-icons `FaLinux`.
+- nixos.svg — NixOS snowflake, from Simple Icons (CC0 1.0),
+  via react-icons `SiNixos`.
+- nobara.svg — Nobara logo, from Simple Icons (CC0 1.0),
+  slug `nobaralinux`.
+- omarchy.svg — Omarchy logo, from Simple Icons (CC0 1.0).
+- opensuse.svg — openSUSE logo, from Font Awesome Free 5 brands
+  (CC BY 4.0), via react-icons `FaSuse`.
+- steam.svg — Steam logo, from Font Awesome Free 5 brands (CC BY 4.0),
+  via react-icons `FaSteam`.
+- ubuntu.svg — Ubuntu Circle of Friends, from Font Awesome Free 5
+  brands (CC BY 4.0), via react-icons `FaUbuntu`.
+- windows.svg — Modern (Windows 11) four-pane mark: four equal squares,
+  no perspective skew. Own geometry, no upstream asset.
+
+License texts: CC0 1.0 <https://creativecommons.org/publicdomain/zero/1.0/>,
+CC BY 4.0 <https://creativecommons.org/licenses/by/4.0/>,
+Apache-2.0 <https://www.apache.org/licenses/LICENSE-2.0>.
