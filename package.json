@@ -1,0 +1,32 @@
+{
+  "name": "punktfunk-website",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "bun": ">=1.4.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview --host",
+    "astro": "astro",
+    "qr": "bun run scripts/generate-qr.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5",
+    "@fontsource/ubuntu": "^5",
+    "astro": "^7.3.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@tailwindcss/vite": "^4.1.14",
+    "@types/node": "^22",
+    "@types/qrcode": "^1",
+    "lucide-static": "^1.43.0",
+    "qrcode": "^1.5.4",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.2"
+  }
+}
