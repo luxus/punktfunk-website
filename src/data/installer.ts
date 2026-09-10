@@ -8,7 +8,7 @@
 export type HostPlatform = {
   id: string;
   name: string;
-  icon: string; // key under /public/os-icons
+  icon: string; // file stem under src/brand-icons/os
   family: "linux" | "windows";
   /** One-page guide for the manual / repo-add route. */
   doc: string;

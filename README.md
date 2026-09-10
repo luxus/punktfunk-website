@@ -35,12 +35,12 @@ src/
   components/   Header, Footer, Logo, Icon, CodeBlock, GuidedInstaller
   data/         site.ts (copy + links), installer.ts (host platforms + commands)
   icons/        Lucide (ISC) SVGs used by the Icon component
+  brand-icons/  distro / OS / launcher marks (see LICENSES files),
+                inlined by the OsIcon component
   layouts/      Base.astro (fonts, meta, header/footer, scroll reveal)
   pages/        index.astro, install.astro
   styles/       global.css (brand tokens, aurora, reveal)
 public/
-  os-icons/     distro / OS brand marks (see LICENSES)
-  launcher-icons/
   qr/           generated store QR codes
 scripts/
   generate-qr.ts
@@ -61,4 +61,5 @@ in the project settings or regenerate the lockfile with Bun 1.2.x.
 
 Colors, fonts (Inter + Ubuntu) and the wordmark follow the unom design system so
 the site stays consistent with the docs and web console. OS/distro icons keep
-their upstream licenses — see `public/os-icons/LICENSES`.
+their upstream licenses — see `src/brand-icons/os/LICENSES` and
+`src/brand-icons/launchers/LICENSES`.
