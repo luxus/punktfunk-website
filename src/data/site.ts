@@ -115,7 +115,8 @@ export const compareRows: CompareRow[] = [
   },
   {
     point: "Price & privacy",
-    others: "Free, but varies by fork.",
+    others:
+      "Sunshine now charges $14.99/year or $49.99 lifetime — forks vary.",
     punktfunk: "Free, open source, no accounts and no cloud — ever.",
   },
 ];

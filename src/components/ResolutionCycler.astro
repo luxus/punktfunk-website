@@ -1,0 +1,60 @@
+---
+/**
+ * The host builds a virtual display at whatever mode the client asks for —
+ * there is no fixed resolution. These examples just illustrate the range.
+ * Decorative — surrounding copy carries the range in prose.
+ */
+---
+
+<div data-modes aria-hidden="true" class="flex h-20 items-center justify-center text-center">
+  <div data-mode-inner class="mode-inner">
+    <span data-res class="block font-display text-4xl text-main tabular-nums md:text-5xl">1280×800</span>
+    <span data-hz class="mt-1 block text-base font-medium text-main/60 tabular-nums">90 Hz</span>
+  </div>
+</div>
+
+<script>
+  const MODES = [
+    { res: "1280×800", hz: "90 Hz" },
+    { res: "1920×1080", hz: "120 Hz" },
+    { res: "2560×1440", hz: "165 Hz" },
+    { res: "3840×2160", hz: "120 Hz" },
+    { res: "5120×1440", hz: "240 Hz" },
+  ];
+  const STEP_MS = 2200;
+
+  const root = document.querySelector("[data-modes]");
+  if (root) {
+    const inner = root.querySelector("[data-mode-inner]") as HTMLElement;
+    const res = root.querySelector("[data-res]") as HTMLElement;
+    const hz = root.querySelector("[data-hz]") as HTMLElement;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      const top = MODES[MODES.length - 1]!;
+      res.textContent = top.res;
+      hz.textContent = top.hz;
+    } else {
+      let i = 0;
+      window.setInterval(() => {
+        inner.classList.add("mode-out");
+        window.setTimeout(() => {
+          i = (i + 1) % MODES.length;
+          const m = MODES[i]!;
+          res.textContent = m.res;
+          hz.textContent = m.hz;
+          inner.classList.remove("mode-out");
+        }, 220);
+      }, STEP_MS);
+    }
+  }
+</script>
+
+<style>
+  .mode-inner {
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+  .mode-out {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+</style>

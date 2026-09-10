@@ -1,6 +1,7 @@
 ---
 import Base from "@/layouts/Base.astro";
 import Icon from "@/components/Icon.astro";
+import OsIcon from "@/components/OsIcon.astro";
 import CodeBlock from "@/components/CodeBlock.astro";
 import { clientApps, links, mobileStores } from "@/data/site";
 import { installCommands } from "@/data/installer";
@@ -12,9 +13,17 @@ import { installCommands } from "@/data/installer";
 >
   {/* ------------------------------------------------------------- Intro */}
   <section class="relative overflow-hidden">
-    <div class="glow pointer-events-none absolute inset-x-0 top-0 h-80"></div>
+    <div class="hero-aurora pointer-events-none absolute inset-0 opacity-80"></div>
+    <div class="hero-grid pointer-events-none absolute inset-0"></div>
+    <div class="hero-noise pointer-events-none absolute inset-0"></div>
+    <div
+      class="pointer-events-none absolute inset-0"
+      style="background-image: linear-gradient(to bottom, transparent 40%, var(--color-neutral) 100%);"
+    >
+    </div>
     <div class="container-page relative py-16 text-center sm:py-20">
-      <h1 class="text-4xl font-bold sm:text-5xl">Install Punktfunk</h1>
+      <p class="eyebrow eyebrow-center">Install</p>
+      <h1 class="mx-auto mt-3 max-w-2xl text-4xl font-bold sm:text-5xl">Install <span class="text-gradient">Punktfunk</span></h1>
       <p class="mx-auto mt-4 max-w-xl text-lg text-secondary">
         Two short steps: install the <strong class="text-main">host</strong> on the
         PC you're streaming from, then add a <strong class="text-main">client</strong>
@@ -33,7 +42,9 @@ import { installCommands } from "@/data/installer";
     <div class="grid gap-6 lg:grid-cols-2">
       <div class="rounded-2xl border border-border bg-neutral-accent/40 p-6">
         <div class="flex items-center gap-2.5">
-          <img src="/os-icons/linux.svg" alt="" width="24" height="24" class="h-6 w-6" />
+          <span class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-gradient-to-br from-neutral-highlight to-neutral-accent text-white shadow-inner">
+            <OsIcon name="linux" size={22} />
+          </span>
           <h3 class="text-lg font-semibold text-main">Linux — any distro</h3>
         </div>
         <p class="mb-4 mt-2 text-sm text-secondary">
@@ -49,7 +60,9 @@ import { installCommands } from "@/data/installer";
 
       <div class="rounded-2xl border border-border bg-neutral-accent/40 p-6">
         <div class="flex items-center gap-2.5">
-          <img src="/os-icons/windows.svg" alt="" width="24" height="24" class="h-6 w-6" />
+          <span class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-gradient-to-br from-neutral-highlight to-neutral-accent text-white shadow-inner">
+            <OsIcon name="windows" size={20} />
+          </span>
           <h3 class="text-lg font-semibold text-main">Windows 11 (22H2+)</h3>
         </div>
         <p class="mb-4 mt-2 text-sm text-secondary">
@@ -82,8 +95,8 @@ import { installCommands } from "@/data/installer";
       {
         clientApps.map((c) => (
           <div class="flex items-start gap-4 rounded-2xl border border-border bg-neutral-accent/40 p-5">
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-neutral-highlight text-main">
-              <img src={`/os-icons/${c.os}.svg`} alt="" width="22" height="22" class="h-[22px] w-[22px]" />
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-neutral-highlight via-neutral-highlight to-brand/40 text-white shadow-lg shadow-black/30">
+              <OsIcon name={c.os} size={22} />
             </div>
             <div>
               <h3 class="text-base font-semibold text-main">{c.device}</h3>
@@ -125,8 +138,8 @@ import { installCommands } from "@/data/installer";
               <div class="rounded-xl bg-white p-3 shadow-lg shadow-black/20">
                 <img src={store.qr} alt={`QR code to install the ${store.name} app`} width="150" height="150" class="h-[150px] w-[150px]" />
               </div>
-              <div class="mt-4 flex items-center gap-2">
-                <img src={`/os-icons/${store.icon}.svg`} alt="" width="20" height="20" class="h-5 w-5" />
+              <div class="mt-4 flex items-center gap-2 text-white">
+                <OsIcon name={store.icon} size={20} />
                 <span class="font-semibold text-main">{store.label}</span>
               </div>
               <p class="mt-1 text-sm text-secondary">{store.note}</p>

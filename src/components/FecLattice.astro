@@ -1,0 +1,75 @@
+---
+/**
+ * Packet lattice: a burst of cells where a few drop out (dashed), then FEC
+ * rebuilds them (highlight) before the next burst. Patterns are fixed, not
+ * random, so the loop stays calm. Decorative — the surrounding copy carries
+ * the FEC story for screen readers.
+ */
+const COLS = 10;
+const ROWS = 3;
+const CELLS = COLS * ROWS;
+---
+
+<div data-fec aria-hidden="true" class="grid grid-cols-10 gap-1.5">
+  {
+    Array.from({ length: CELLS }, (_, i) => (
+      <span data-cell={i} class="fec-cell fec-ok" />
+    ))
+  }
+</div>
+
+<script>
+  const PATTERNS: number[][] = [
+    [4, 13, 22],
+    [7, 16],
+    [2, 11, 25, 28],
+    [9, 19],
+    [5, 14, 23],
+  ];
+  const STEP_MS = 1700;
+
+  const root = document.querySelector("[data-fec]");
+  if (root) {
+    const cells = Array.from(root.querySelectorAll("[data-cell]"));
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const paint = (lost: number[], fixed: number[]) => {
+      for (const el of cells) {
+        const i = Number((el as HTMLElement).dataset.cell);
+        el.classList.toggle("fec-lost", lost.includes(i));
+        el.classList.toggle("fec-fixed", fixed.includes(i));
+        el.classList.toggle("fec-ok", !lost.includes(i) && !fixed.includes(i));
+      }
+    };
+    if (reduce) {
+      paint([], [4, 22]);
+    } else {
+      let step = 0;
+      let repair: ReturnType<typeof setTimeout> | undefined;
+      window.setInterval(() => {
+        const pattern = PATTERNS[step % PATTERNS.length] ?? [];
+        step += 1;
+        paint(pattern, []);
+        clearTimeout(repair);
+        repair = setTimeout(() => paint([], pattern), STEP_MS * 0.45);
+      }, STEP_MS);
+    }
+  }
+</script>
+
+<style>
+  .fec-cell {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 3px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  @media (min-width: 768px) {
+    .fec-cell { width: 1rem; height: 1rem; }
+  }
+  .fec-ok { background: color-mix(in oklch, white 25%, transparent); }
+  .fec-lost {
+    background: transparent;
+    border: 1px dashed color-mix(in oklch, white 40%, transparent);
+  }
+  .fec-fixed { background: var(--color-highlight); }
+</style>

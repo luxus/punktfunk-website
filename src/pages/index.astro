@@ -1,84 +1,232 @@
 ---
 import Base from "@/layouts/Base.astro";
 import Icon from "@/components/Icon.astro";
+import OsIcon from "@/components/OsIcon.astro";
 import GuidedInstaller from "@/components/GuidedInstaller.astro";
+import FecLattice from "@/components/FecLattice.astro";
+import ResolutionCycler from "@/components/ResolutionCycler.astro";
+import ResumeTimeline from "@/components/ResumeTimeline.astro";
+import StackCutaway from "@/components/StackCutaway.astro";
+import StatsReadout from "@/components/StatsReadout.astro";
 import { features, compareRows, clientApps, links, heroBadges, site } from "@/data/site";
+import { hostPlatforms } from "@/data/installer";
+
+const launchers = [
+  { name: "steam", label: "Steam" },
+  { name: "epic", label: "Epic" },
+  { name: "gog", label: "GOG" },
+  { name: "heroic", label: "Heroic" },
+  { name: "lutris", label: "Lutris" },
+  { name: "playnite", label: "Playnite" },
+  { name: "xbox", label: "Xbox" },
+] as const;
+
+const streamBars = [62, 88, 45, 76, 95, 58, 82, 70, 92, 50, 77, 66];
 ---
 
 <Base>
   {/* ---------------------------------------------------------------- Hero */}
-  <section class="relative overflow-hidden">
-    <div class="hero-aurora pointer-events-none absolute inset-x-0 top-0 h-[640px] opacity-70"></div>
+  <section class="relative overflow-hidden bg-neutral-accent">
+    {/* Glossy lens render — the previous site's signature backdrop. */}
+    <picture>
+      <source srcset="/header-bg.avif" type="image/avif" />
+      <source srcset="/header-bg.webp" type="image/webp" />
+      <img
+        src="/header-bg.webp"
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+        class="hero-lens pointer-events-none absolute inset-0 h-full w-full select-none"
+        fetchpriority="high"
+      />
+    </picture>
+    {/* Scrims: faint at the top for nav legibility, stronger toward the
+        fold so the copy and session card read over the render. */}
     <div
-      class="pointer-events-none absolute inset-x-0 top-0 h-[640px]"
-      style="background-image: linear-gradient(to bottom, transparent 55%, var(--color-neutral) 100%);"
-    >
-    </div>
-    <div class="container-page relative py-20 text-center sm:py-28">
-      <span
-        class="inline-flex items-center gap-2 rounded-full border border-border bg-neutral-highlight/50 px-4 py-1.5 text-xs font-medium text-brand-light"
-      >
-        <Icon name="zap" size={14} />
-        A rebuild, not another fork
-      </span>
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#171b67]/70 to-transparent"
+    ></div>
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-[#20288e]/35 to-[#20288e]"
+    ></div>
+    <div class="hero-grid pointer-events-none absolute inset-0 opacity-60"></div>
+    <div class="hero-noise pointer-events-none absolute inset-0"></div>
+    {/* orbiting orbs */}
+    <div class="orb orb-a pointer-events-none absolute left-[8%] top-24 hidden sm:block"></div>
+    <div class="orb orb-b pointer-events-none absolute right-[6%] top-64 hidden sm:block"></div>
 
-      <h1 class="mx-auto mt-6 max-w-3xl text-4xl font-bold leading-[1.1] sm:text-6xl">
-        Stream your PC to{" "}
-        <span class="text-brand-light">any screen</span>
-      </h1>
-
-      <p class="mx-auto mt-6 max-w-2xl text-lg text-secondary">
-        {site.description}
-      </p>
-
-      <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
-        <a
-          href="/install"
-          class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-base font-semibold text-main shadow-xl shadow-brand/30 transition-transform hover:scale-[1.03] hover:bg-brand-light"
+    <div class="container-page relative grid items-center gap-14 py-16 sm:py-24 lg:grid-cols-[1.05fr_0.95fr] lg:py-28">
+      {/* Copy */}
+      <div class="text-center lg:text-left">
+        <span
+          class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium text-brand-light shadow-lg shadow-brand/10 backdrop-blur"
         >
-          <Icon name="download" size={18} />
-          Install Punktfunk
-        </a>
-        <a
-          href="#compare"
-          class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-base font-semibold text-main transition-colors hover:border-brand-light hover:bg-neutral-highlight/50"
-        >
-          Why it's different
-          <Icon name="arrow-right" size={18} />
-        </a>
+          <span class="live-dot"></span>
+          A rebuild, not another fork
+        </span>
+
+        <h1 class="mx-auto mt-6 max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:mx-0">
+          Stream your PC to{" "}
+          <span class="text-gradient">any screen</span>
+        </h1>
+
+        <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-secondary lg:mx-0">
+          {site.description}
+        </p>
+
+        <div class="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+          <a
+            href="/install"
+            class="btn-beam inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-base font-semibold text-main shadow-xl shadow-brand/30 transition-transform hover:scale-[1.03] hover:bg-brand-light"
+          >
+            <Icon name="download" size={18} />
+            Install Punktfunk
+          </a>
+          <a
+            href="#compare"
+            class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-base font-semibold text-main backdrop-blur transition-colors hover:border-brand-light hover:bg-neutral-highlight/50"
+          >
+            Why it's different
+            <Icon name="arrow-right" size={18} />
+          </a>
+        </div>
+
+        <ul class="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-secondary lg:mx-0 lg:justify-start">
+          {
+            heroBadges.map((b) => (
+              <li class="flex items-center gap-2">
+                <Icon name="check" size={16} class="text-success" />
+                {b}
+              </li>
+            ))
+          }
+        </ul>
       </div>
 
-      <ul class="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-secondary">
-        {
-          heroBadges.map((b) => (
-            <li class="flex items-center gap-2">
-              <Icon name="check" size={16} class="text-success" />
-              {b}
-            </li>
-          ))
-        }
-      </ul>
+      {/* Live session visual */}
+      <div data-reveal class="relative mx-auto w-full max-w-md lg:max-w-none">
+        <div class="session-glow pointer-events-none absolute -inset-8"></div>
+        <div class="float-slow relative overflow-hidden rounded-3xl border border-white/12 bg-neutral-accent/80 shadow-2xl shadow-black/50 backdrop-blur-xl">
+          {/* window chrome */}
+          <div class="flex items-center gap-2 border-b border-white/10 px-5 py-3.5">
+            <span class="h-2.5 w-2.5 rounded-full bg-[#ff5f57]"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-[#28c840]"></span>
+            <span class="ml-3 flex items-center gap-1.5 text-xs text-secondary">
+              <span class="live-dot live-dot-sm"></span>
+              punktfunk — living room · 4K
+            </span>
+          </div>
+          {/* fake stream canvas */}
+          <div class="stream-canvas relative px-5 pb-2 pt-5">
+            <div class="relative flex h-44 items-end gap-1.5 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-t from-brand/25 via-neutral-accent to-neutral-accent p-4">
+              <div class="stream-scan"></div>
+              {
+                streamBars.map((h, i) => (
+                  <span
+                    class="stream-bar"
+                    style={`height:${h}%;animation-delay:${(i * 0.22).toFixed(2)}s`}
+                  />
+                ))
+              }
+              <span class="absolute left-4 top-3 rounded-full border border-white/15 bg-black/40 px-2.5 py-1 text-[11px] font-medium text-main backdrop-blur">
+                Elden Ring · 2160p
+              </span>
+              <span class="absolute right-4 top-3 rounded-full bg-success/15 px-2.5 py-1 text-[11px] font-semibold text-success">
+                ● live
+              </span>
+              <div class="absolute bottom-3 left-4 w-44">
+                <StatsReadout />
+              </div>
+            </div>
+          </div>
+          {/* host → clients */}
+          <div class="space-y-2.5 px-5 py-5">
+            {
+              [
+                { os: "steam", t: "Steam Deck · 1280×800", s: "its own display", delay: "0s" },
+                { os: "apple", t: "MacBook · 1512×982", s: "its own display", delay: "1.4s" },
+                { os: "windows", t: "Office PC · 1440p", s: "session survives drops", delay: "2.8s" },
+              ].map((row) => (
+                <div
+                  class="float-chip flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm"
+                  style={`animation-delay:${row.delay}`}
+                >
+                  <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand/50 to-highlight/40 text-white">
+                    <OsIcon name={row.os} size={17} />
+                  </span>
+                  <span class="font-medium text-main">{row.t}</span>
+                  <span class="ml-auto hidden text-xs text-success sm:inline">{row.s}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        {/* floating controller chip */}
+        <div class="float-chip absolute -right-3 -top-5 flex items-center gap-2 rounded-2xl border border-white/12 bg-neutral-highlight/90 px-3.5 py-2.5 text-xs font-medium text-main shadow-xl shadow-black/40 backdrop-blur sm:-right-6">
+          <Icon name="gamepad-2" size={16} class="text-brand-light" />
+          DualSense · haptics + speaker
+        </div>
+        <div class="float-chip absolute -bottom-5 -left-3 flex items-center gap-2 rounded-2xl border border-white/12 bg-neutral-highlight/90 px-3.5 py-2.5 text-xs font-medium text-main shadow-xl shadow-black/40 backdrop-blur sm:-left-6" style="animation-delay:2s">
+          <Icon name="shield-check" size={16} class="text-success" />
+          PIN paired · no cloud
+        </div>
+      </div>
+    </div>
+
+    {/* distro marquee */}
+    <div class="relative border-y border-white/10 bg-black/30 py-4 backdrop-blur">
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          {
+            [...hostPlatforms, ...hostPlatforms].map((p) => (
+              <span class="marquee-item">
+                <OsIcon name={p.icon} size={18} />
+                {p.name}
+              </span>
+            ))
+          }
+        </div>
+      </div>
+      <p class="sr-only">
+        Supported hosts: {hostPlatforms.map((p) => p.name).join(", ")}
+      </p>
     </div>
   </section>
 
   {/* ------------------------------------------------- Rebuild, not a fork */}
-  <section class="container-page py-8">
+  <section class="container-page py-14">
     <div
       data-reveal
-      class="grid gap-8 rounded-[var(--radius-card)] border border-border bg-neutral-accent/50 p-8 sm:grid-cols-2 sm:p-10"
+      class="rebuild-card relative grid gap-8 overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-neutral-accent/70 p-8 sm:grid-cols-2 sm:p-10"
     >
-      <div>
-        <h2 class="text-2xl font-semibold sm:text-3xl">
+      <div class="rebuild-sheen pointer-events-none absolute inset-0"></div>
+      <div class="relative">
+        <p class="eyebrow">Why a rebuild</p>
+        <h2 class="mt-3 text-2xl font-semibold sm:text-3xl">
           Not another fork of NVIDIA's old code
         </h2>
-        <p class="mt-4 text-secondary">
+        <p class="mt-4 leading-relaxed text-secondary">
           Most self-hosted streaming still runs on GameStream — a protocol NVIDIA
           abandoned — passed down through fork after fork. Punktfunk starts over:
           a single, modern codebase written in Rust, shared by the host and every
           app. One fix lands everywhere at once.
         </p>
+        <p class="mt-5 inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-4 py-1.5 font-mono text-xs text-brand-light">
+          <Icon name="terminal" size={14} />
+          one Rust core → host + every client
+        </p>
+        <div class="mt-6 rounded-2xl border border-white/10 bg-black/25 p-5">
+          <FecLattice />
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="inline-flex items-center rounded-full border border-white/15 px-3 py-1 font-display text-sm font-medium text-main/80">QUIC</span>
+            <span class="inline-flex items-center gap-1 rounded-full border border-highlight/40 px-3 py-1 font-display text-sm font-medium text-highlight"><Icon name="check" size={14} />GF(2¹⁶) FEC</span>
+            <span class="inline-flex items-center gap-1 rounded-full border border-white/15 px-3 py-1 font-display text-sm font-medium text-main/45 line-through">GameStream's FEC wall</span>
+          </div>
+        </div>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2">
+      <div class="relative grid gap-4 sm:grid-cols-2">
         {
           [
             { icon: "rocket", t: "Rust from the ground up", d: "One core carries the protocol, encryption and error correction — on every platform." },
@@ -86,10 +234,12 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
             { icon: "shield-check", t: "First-class Linux & Windows", d: "Both are real hosts with their own display drivers — not one afterthought." },
             { icon: "heart", t: "Free, always", d: "Open source under MIT / Apache-2.0. No accounts, no paywall." },
           ].map((item) => (
-            <div class="rounded-2xl border border-border bg-neutral p-5">
-              <Icon name={item.icon} size={22} class="text-brand-light" />
+            <div class="card-hover rounded-2xl border border-white/10 bg-neutral/80 p-5">
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand/40 to-highlight/25 text-brand-light">
+                <Icon name={item.icon} size={20} />
+              </span>
               <h3 class="mt-3 text-base font-semibold text-main">{item.t}</h3>
-              <p class="mt-1.5 text-sm text-secondary">{item.d}</p>
+              <p class="mt-1.5 text-sm leading-relaxed text-secondary">{item.d}</p>
             </div>
           ))
         }
@@ -98,9 +248,10 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
   </section>
 
   {/* --------------------------------------------------------- Features */}
-  <section id="features" class="container-page scroll-mt-24 py-20">
+  <section id="features" class="container-page scroll-mt-24 py-16">
     <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-3xl font-bold sm:text-4xl">Everything you'd want, in plain terms</h2>
+      <p class="eyebrow eyebrow-center">What it does</p>
+      <h2 class="mt-3 text-3xl font-bold sm:text-4xl">Everything you'd want, in plain terms</h2>
       <p class="mt-4 text-secondary">
         No jargon. Here's what Punktfunk actually does for you.
       </p>
@@ -109,15 +260,77 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
     <div data-reveal class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {
         features.map((f) => (
-          <div class="group rounded-2xl border border-border bg-neutral-accent/40 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-brand-light/50 hover:bg-neutral-accent/70">
-            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand/15 text-brand-light transition-colors group-hover:bg-brand/25">
+          <div class="card-hover group rounded-2xl border border-white/10 bg-neutral-accent/50 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-brand-light/50 hover:bg-neutral-accent/80">
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-brand/35 to-highlight/20 text-brand-light transition-colors group-hover:from-brand/50 group-hover:to-highlight/35">
               <Icon name={f.icon} size={22} />
             </div>
             <h3 class="mt-4 text-lg font-semibold text-main">{f.title}</h3>
-            <p class="mt-2 text-sm text-secondary">{f.body}</p>
+            <p class="mt-2 text-sm leading-relaxed text-secondary">{f.body}</p>
           </div>
         ))
       }
+    </div>
+
+    {/* library strip */}
+    <div data-reveal class="mt-6 flex flex-col items-center gap-4 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-brand/15 via-neutral-accent/60 to-highlight/15 px-6 py-6 sm:flex-row sm:justify-between">
+      <p class="text-sm text-secondary">
+        <strong class="text-main">Your whole library, in one grid</strong>
+        <span class="mt-1 block">Add-ons pull in the launchers you already use — no re-buying, no re-adding.</span>
+      </p>
+      <ul class="flex flex-wrap items-center gap-2.5">
+        {
+          launchers.map((l) => (
+            <li
+              title={l.label}
+              class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-black/40 text-white/90 transition-all hover:-translate-y-0.5 hover:border-brand-light/60 hover:text-white"
+            >
+              <OsIcon name={l.name} dir="launcher-icons" size={19} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* --------------------------------------------------- Under the hood */}
+  <section class="container-page py-8">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="eyebrow eyebrow-center">Under the hood</p>
+      <h2 class="mt-3 text-3xl font-bold sm:text-4xl">Deep tech you can watch work</h2>
+      <p class="mt-4 text-secondary">
+        The machinery behind the plain-English features — live, not mockups.
+      </p>
+    </div>
+    <div data-reveal class="mt-12 grid gap-5 lg:grid-cols-3">
+      <div class="card-hover flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-neutral-accent/50 p-6 text-center">
+        <ResolutionCycler />
+        <div>
+          <h3 class="text-lg font-semibold text-main">Exact modes, per device</h3>
+          <p class="mt-2 text-sm leading-relaxed text-secondary">The host builds a virtual display at whatever the client asks for — a handheld's 1280×800 up to a 5120×1440 ultrawide. No dummy plugs, no EDID hacks.</p>
+        </div>
+      </div>
+      <div class="card-hover flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-neutral-accent/50 p-6 text-center">
+        <ResumeTimeline />
+        <div>
+          <h3 class="text-lg font-semibold text-main">Drops don't end the session</h3>
+          <p class="mt-2 text-sm leading-relaxed text-secondary">Lose the connection and the display — and the game — stays alive until you reconnect.</p>
+          <div class="mt-3 flex flex-wrap justify-center gap-2">
+            <span class="inline-flex items-center gap-1 rounded-full border border-highlight/40 px-3 py-1 text-xs font-medium text-highlight"><Icon name="check" size={13} />Drops you back in</span>
+            <span class="inline-flex items-center rounded-full border border-white/15 px-3 py-1 text-xs font-medium text-main/45 line-through">Starts from scratch</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-hover flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-neutral-accent/50 p-6 text-center">
+        <StackCutaway />
+        <div>
+          <h3 class="text-lg font-semibold text-main">Owned top to bottom</h3>
+          <p class="mt-2 text-sm leading-relaxed text-secondary">Display driver, protocol and clients from one Rust core — frames go straight into our driver, no screen scraping in between.</p>
+          <div class="mt-3 flex flex-wrap justify-center gap-2">
+            <span class="inline-flex items-center gap-1 rounded-full border border-highlight/40 px-3 py-1 text-xs font-medium text-highlight"><Icon name="check" size={13} />Rust driver</span>
+            <span class="inline-flex items-center rounded-full border border-white/15 px-3 py-1 text-xs font-medium text-main/45 line-through">Screen scraping</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -125,18 +338,20 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
   <section class="container-page py-8">
     <div
       data-reveal
-      class="relative overflow-hidden rounded-[var(--radius-card)] border border-border bg-gradient-to-br from-neutral-highlight/60 to-neutral-accent/40 p-8 sm:p-12"
+      class="controller-card relative overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-gradient-to-br from-neutral-highlight/70 via-neutral-accent/60 to-neutral-accent/40 p-8 sm:p-12"
     >
+      <div class="controller-beam pointer-events-none absolute inset-0"></div>
       <div class="glow pointer-events-none absolute -right-20 -top-20 h-72 w-72 opacity-60"></div>
       <div class="relative grid items-center gap-8 lg:grid-cols-[1.3fr_1fr]">
         <div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand/20 text-brand-light">
+          <div class="pad-glow flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand/50 to-highlight/30 text-white">
             <Icon name="gamepad-2" size={26} />
           </div>
-          <h2 class="mt-5 text-2xl font-bold sm:text-3xl">
+          <p class="eyebrow mt-5">Controllers</p>
+          <h2 class="mt-2 text-2xl font-bold sm:text-3xl">
             Made for modern controllers
           </h2>
-          <p class="mt-4 max-w-xl text-secondary">
+          <p class="mt-4 max-w-xl leading-relaxed text-secondary">
             Punktfunk speaks the language of today's gamepads. The
             <strong class="text-main"> Steam Controller 2</strong> and the
             <strong class="text-main"> DualSense</strong> both work out of the box —
@@ -144,6 +359,7 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
             all the way to the pad in your hands, so games feel and sound the way
             they were meant to.
           </p>
+          <div class="dualbar mt-6 h-1.5 w-56 overflow-hidden rounded-full" aria-hidden="true"><span></span></div>
         </div>
         <ul class="space-y-3">
           {
@@ -153,8 +369,8 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
               "Guide button & quick-access menus",
               "Works wired or wireless",
             ].map((item) => (
-              <li class="flex items-center gap-3 rounded-xl border border-border bg-neutral/60 px-4 py-3 text-sm text-main">
-                <Icon name="check" size={18} class="text-success" />
+              <li class="card-hover flex items-center gap-3 rounded-xl border border-white/10 bg-neutral/70 px-4 py-3 text-sm text-main">
+                <Icon name="check" size={18} class="shrink-0 text-success" />
                 {item}
               </li>
             ))
@@ -165,27 +381,35 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
   </section>
 
   {/* ----------------------------------------------------------- Compare */}
-  <section id="compare" class="container-page scroll-mt-24 py-20">
+  <section id="compare" class="container-page scroll-mt-24 py-16">
     <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-3xl font-bold sm:text-4xl">
+      <p class="eyebrow eyebrow-center">The honest difference</p>
+      <h2 class="mt-3 text-3xl font-bold sm:text-4xl">
         Why Punktfunk over Sunshine, Moonlight & the forks
       </h2>
       <p class="mt-4 text-secondary">
         The Sunshine family (Apollo, Vibeshine and friends) are Moonlight hosts
-        built on old code. Here's the honest difference.
+        built on old code — and Sunshine recently went paid. Here's the honest difference.
       </p>
     </div>
 
-    <div data-reveal class="mx-auto mt-12 max-w-4xl overflow-hidden rounded-2xl border border-border">
+    <div data-reveal class="mx-auto mt-8 max-w-4xl">
+      <p class="price-callout">
+        <Icon name="zap" size={16} class="shrink-0 text-brand-light" />
+        <span><strong class="text-main">Sunshine now charges $14.99/year or $49.99 lifetime.</strong> Punktfunk stays free and open source — no accounts, no paywall, ever.</span>
+      </p>
+    </div>
+
+    <div data-reveal class="compare-frame mx-auto mt-6 max-w-4xl overflow-hidden rounded-2xl border border-white/10">
       <div
-        class="grid grid-cols-[1fr_1fr] gap-px bg-border text-sm sm:grid-cols-[0.8fr_1fr_1fr]"
+        class="grid grid-cols-[1fr_1fr] gap-px bg-white/10 text-sm sm:grid-cols-[0.8fr_1fr_1fr]"
       >
         <div class="hidden bg-neutral-accent px-5 py-4 font-semibold text-secondary sm:block"></div>
         <div class="bg-neutral-accent px-5 py-4 font-semibold text-secondary">
           Sunshine / Moonlight / forks
         </div>
-        <div class="bg-neutral-highlight px-5 py-4 font-semibold text-brand-light">
-          Punktfunk
+        <div class="compare-head bg-neutral-highlight px-5 py-4 font-semibold text-brand-light">
+          Punktfunk <span class="ml-2 rounded-full bg-brand/25 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide">Free forever</span>
         </div>
 
         {
@@ -194,11 +418,11 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
               <div class="hidden bg-neutral px-5 py-4 font-medium text-main sm:block">
                 {row.point}
               </div>
-              <div class="bg-neutral px-5 py-4 text-secondary">
+              <div class="bg-neutral/90 px-5 py-4 text-secondary">
                 <span class="mb-1 block font-medium text-main sm:hidden">{row.point}</span>
                 {row.others}
               </div>
-              <div class="bg-neutral px-5 py-4 text-main">
+              <div class="compare-cell bg-neutral px-5 py-4 text-main">
                 <span class="flex gap-2">
                   <Icon name="check" size={17} class="mt-0.5 shrink-0 text-success" />
                   <span>{row.punktfunk}</span>
@@ -220,12 +444,13 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
   {/* --------------------------------------------------------- Installer */}
   <section class="container-page scroll-mt-24 py-12">
     <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-3xl font-bold sm:text-4xl">Set it up in one step</h2>
+      <p class="eyebrow eyebrow-center">Get going</p>
+      <h2 class="mt-3 text-3xl font-bold sm:text-4xl">Set it up in one step</h2>
       <p class="mt-4 text-secondary">
         Tell us what you're streaming from and copy the command. That's it.
       </p>
     </div>
-    <div data-reveal class="mx-auto mt-10 max-w-3xl">
+    <div data-reveal class="installer-frame relative mx-auto mt-10 max-w-3xl">
       <GuidedInstaller />
       <div class="mt-4 text-center">
         <a
@@ -240,9 +465,10 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
   </section>
 
   {/* ---------------------------------------------------------- Clients */}
-  <section class="container-page py-20">
+  <section class="container-page py-16">
     <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-3xl font-bold sm:text-4xl">Play on every screen you own</h2>
+      <p class="eyebrow eyebrow-center">Clients</p>
+      <h2 class="mt-3 text-3xl font-bold sm:text-4xl">Play on every screen you own</h2>
       <p class="mt-4 text-secondary">
         Native apps for the devices you already have. Each one finds your host
         automatically and pairs once with a PIN.
@@ -252,9 +478,9 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
     <div data-reveal class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
         clientApps.map((c) => (
-          <div class="flex items-start gap-4 rounded-2xl border border-border bg-neutral-accent/40 p-5 transition-all duration-200 hover:-translate-y-1 hover:border-brand-light/40">
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-neutral-highlight text-main">
-              <img src={`/os-icons/${c.os}.svg`} alt="" width="22" height="22" class="h-[22px] w-[22px]" />
+          <div class="card-hover flex items-start gap-4 rounded-2xl border border-white/10 bg-neutral-accent/50 p-5 transition-all duration-200 hover:-translate-y-1 hover:border-brand-light/40">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-neutral-highlight via-neutral-highlight to-brand/40 text-white shadow-lg shadow-black/30">
+              <OsIcon name={c.os} size={22} />
             </div>
             <div>
               <h3 class="text-base font-semibold text-main">{c.device}</h3>
@@ -269,11 +495,12 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
   {/* ------------------------------------------------------------- Links CTA */}
   <section class="container-page pb-24">
     <div
-      class="relative overflow-hidden rounded-[var(--radius-card)] border border-border bg-neutral-accent/60 p-10 text-center sm:p-14"
+      class="cta-beam relative overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-neutral-accent/70 p-10 text-center sm:p-14"
     >
       <div class="glow pointer-events-none absolute inset-x-0 top-0 h-60"></div>
       <div class="relative">
-        <h2 class="text-3xl font-bold sm:text-4xl">Ready when you are</h2>
+        <p class="eyebrow eyebrow-center">Free & open source</p>
+        <h2 class="mt-3 text-3xl font-bold sm:text-4xl">Ready when you are</h2>
         <p class="mx-auto mt-4 max-w-xl text-secondary">
           Free and open source. Dive into the code, read the docs, or say hello to
           the community.
@@ -281,20 +508,20 @@ import { features, compareRows, clientApps, links, heroBadges, site } from "@/da
         <div class="mt-8 flex flex-wrap justify-center gap-3">
           <a
             href="/install"
-            class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-semibold text-main transition-transform hover:scale-[1.03] hover:bg-brand-light"
+            class="btn-beam inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-semibold text-main transition-transform hover:scale-[1.03] hover:bg-brand-light"
           >
             <Icon name="download" size={18} /> Install now
           </a>
-          <a href={links.source} class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
+          <a href={links.source} class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
             <Icon name="github" size={18} /> Source code
           </a>
-          <a href={links.docs} class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
+          <a href={links.docs} class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
             <Icon name="book-open" size={18} /> Docs
           </a>
-          <a href={links.discord} class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
+          <a href={links.discord} class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
             <Icon name="message-circle" size={18} /> Community
           </a>
-          <a href={links.sponsors} class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
+          <a href={links.sponsors} class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-semibold text-main transition-colors hover:border-brand-light">
             <Icon name="heart" size={18} /> Sponsors
           </a>
         </div>
