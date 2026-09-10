@@ -52,6 +52,13 @@ The site outputs static files to `dist/`. Cloudflare Pages is wired to this
 repository and rebuilds automatically on pushes to `main`
 (build command `bun run build`, output directory `dist`).
 
+Cloudflare's build image defaults to Bun 1.2.x, which cannot read this repo's
+`bun.lock` (lockfile v2, written by Bun 1.4) and fails with
+`Unknown lockfile version`. Pin the toolchain in the project settings with
+`BUN_VERSION=1.4.0` (Pages: Settings → Environment variables; Workers Builds:
+Settings → Build → Variables and Secrets) so installs run
+`bun install --frozen-lockfile` on Bun 1.4.
+
 ## Branding & licenses
 
 Colors, fonts (Inter + Ubuntu) and the wordmark follow the unom design system so
