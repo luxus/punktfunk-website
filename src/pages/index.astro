@@ -2,7 +2,6 @@
 import Base from "@/layouts/Base.astro";
 import Icon from "@/components/Icon.astro";
 import OsIcon from "@/components/OsIcon.astro";
-import GuidedInstaller from "@/components/GuidedInstaller.astro";
 import FecLattice from "@/components/FecLattice.astro";
 import ResolutionCycler from "@/components/ResolutionCycler.astro";
 import ResumeTimeline from "@/components/ResumeTimeline.astro";
@@ -447,18 +446,63 @@ const streamBars = [62, 88, 45, 76, 95, 58, 82, 70, 92, 50, 77, 66];
       <p class="eyebrow eyebrow-center">Get going</p>
       <h2 class="mt-3 text-3xl font-bold sm:text-4xl">Set it up in one step</h2>
       <p class="mt-4 text-secondary">
-        Tell us what you're streaming from and copy the command. That's it.
+        Pick your host and your screens on one page — commands, downloads and
+        QR codes included.
       </p>
     </div>
-    <div data-reveal class="installer-frame relative mx-auto mt-10 max-w-3xl">
-      <GuidedInstaller />
-      <div class="mt-4 text-center">
+    <div data-reveal class="installer-frame relative mx-auto mt-10 max-w-3xl overflow-hidden rounded-[var(--radius-card)] border border-border bg-neutral-accent/60 p-6 sm:p-8">
+      <div class="grid gap-6 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-secondary">From · your host</p>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {
+              hostPlatforms.map((p) => (
+                <li
+                  title={p.name}
+                  class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-black/40 text-white/90"
+                >
+                  <OsIcon name={p.icon} size={19} />
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <Icon name="arrow-right" size={20} class="mx-auto hidden shrink-0 text-brand-light sm:block" />
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-secondary">To · your screens</p>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {
+              [
+                { os: "apple", label: "Apple" },
+                { os: "linux", label: "Android & Linux" },
+                { os: "windows", label: "Windows" },
+                { os: "steam", label: "Steam Deck" },
+              ].map((c) => (
+                <li
+                  title={c.label}
+                  class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-black/40 text-white/90"
+                >
+                  <OsIcon name={c.os} size={19} />
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+      <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
         <a
-          href="/install"
-          class="inline-flex items-center gap-2 text-sm font-medium text-brand-light hover:text-main"
+          href="/install#host"
+          class="btn-beam inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-base font-semibold text-main shadow-xl shadow-brand/30 transition-transform hover:scale-[1.03] hover:bg-brand-light"
         >
-          Full host &amp; client guides, and the mobile apps
-          <Icon name="arrow-right" size={16} />
+          <Icon name="download" size={18} />
+          Install the host
+        </a>
+        <a
+          href="/install#clients"
+          class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-base font-semibold text-main transition-colors hover:border-brand-light hover:bg-neutral-highlight/50"
+        >
+          Get a client
+          <Icon name="arrow-right" size={18} />
         </a>
       </div>
     </div>

@@ -124,14 +124,16 @@ export const compareRows: CompareRow[] = [
 /** Client apps and where to get them. */
 export type ClientApp = {
   device: string;
-  os: string; // icon key under /public/os-icons
+  os: string; // file stem under src/brand-icons/os
   how: string;
+  /** Key into mobileStores when the client is a store download. */
+  store?: "android" | "apple";
 };
 
 export const clientApps: ClientApp[] = [
-  { device: "Mac", os: "apple", how: "Apple app — notarized download or TestFlight" },
-  { device: "iPhone · iPad · Apple TV", os: "apple", how: "Apple app on TestFlight" },
-  { device: "Android phone & TV", os: "linux", how: "Android app on Google Play" },
+  { device: "Mac", os: "apple", how: "Apple app — notarized download or TestFlight", store: "apple" },
+  { device: "iPhone · iPad · Apple TV", os: "apple", how: "Apple app on TestFlight", store: "apple" },
+  { device: "Android phone & TV", os: "linux", how: "Android app on Google Play", store: "android" },
   { device: "Windows", os: "windows", how: "Signed installer, or portable download" },
   { device: "Linux desktop & laptop", os: "linux", how: "Flatpak — or apt · dnf · pacman" },
   { device: "Steam Deck", os: "steam", how: "Decky plugin in Gaming Mode, Flatpak on Desktop" },

@@ -84,6 +84,7 @@ const payload = {
     icon: string;
     family: "linux" | "windows";
     doc: string;
+    script?: boolean;
     note?: string;
   };
   type Payload = {
@@ -152,6 +153,25 @@ const payload = {
         )
         .join("")}</div>`;
 
+    const manualBlock = (p: Platform) => {
+      return `
+        <div class="overflow-hidden rounded-xl border border-border bg-neutral">
+          <div class="border-b border-border px-4 py-2.5">
+            <span class="text-xs font-semibold uppercase tracking-wide text-secondary">${escapeHtml(
+              p.name,
+            )} — no one-liner</span>
+          </div>
+          <p class="px-4 py-3 text-sm leading-relaxed text-main">${escapeHtml(
+            p.note ?? "This system doesn't use the install script.",
+          )}</p>
+          <p class="border-t border-border px-4 py-2.5">
+            <a href="${p.doc}" class="text-xs font-medium text-brand-light underline underline-offset-2 hover:text-main">${escapeHtml(
+              p.name,
+            )} guide →</a>
+          </p>
+        </div>`;
+    };
+
     const render = () => {
       const picked = data.platforms.filter((p) => selected.has(p.id));
       if (picked.length === 0) {
@@ -163,8 +183,12 @@ const payload = {
       empty.classList.add("hidden");
       results.classList.remove("hidden");
 
-      const linux = picked.filter((p) => p.family === "linux");
-      const windows = picked.filter((p) => p.family === "windows");
+      // Platforms installed via flake/module instead of the script (NixOS)
+      // never join the one-liner coverage.
+      const scripted = picked.filter((p) => p.script !== false);
+      const manual = picked.filter((p) => p.script === false);
+      const linux = scripted.filter((p) => p.family === "linux");
+      const windows = scripted.filter((p) => p.family === "windows");
       const blocks: string[] = [];
 
       if (linux.length > 0) {
@@ -185,12 +209,15 @@ const payload = {
           ),
         );
       }
+      for (const p of manual) {
+        blocks.push(manualBlock(p));
+      }
 
-      const notes = noteList(picked);
+      const notes = noteList(scripted);
       results.innerHTML =
         blocks.join("") +
         (notes ? `<div class="pt-1">${notes}</div>` : "") +
-        `<div class="pt-1">${docLinks(picked)}</div>`;
+        (scripted.length > 0 ? `<div class="pt-1">${docLinks(scripted)}</div>` : "");
 
       results.querySelectorAll<HTMLButtonElement>(".copy-btn").forEach((btn) => {
         btn.addEventListener("click", async () => {

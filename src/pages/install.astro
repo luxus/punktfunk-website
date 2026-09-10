@@ -1,10 +1,9 @@
 ---
 import Base from "@/layouts/Base.astro";
 import Icon from "@/components/Icon.astro";
-import OsIcon from "@/components/OsIcon.astro";
-import CodeBlock from "@/components/CodeBlock.astro";
-import { clientApps, links, mobileStores } from "@/data/site";
-import { installCommands } from "@/data/installer";
+import GuidedInstaller from "@/components/GuidedInstaller.astro";
+import GuidedClient from "@/components/GuidedClient.astro";
+import { links } from "@/data/site";
 ---
 
 <Base
@@ -32,82 +31,18 @@ import { installCommands } from "@/data/installer";
     </div>
   </section>
 
-  {/* -------------------------------------------------------- Host guide */}
-  <section id="host" class="container-page scroll-mt-24 pb-8">
-    <div class="mb-8 flex items-center gap-3">
-      <span class="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-main">1</span>
-      <h2 class="text-2xl font-bold sm:text-3xl">Install the host</h2>
-    </div>
-
-    <div class="grid gap-6 lg:grid-cols-2">
-      <div class="rounded-2xl border border-border bg-neutral-accent/40 p-6">
-        <div class="flex items-center gap-2.5">
-          <span class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-gradient-to-br from-neutral-highlight to-neutral-accent text-white shadow-inner">
-            <OsIcon name="linux" size={22} />
-          </span>
-          <h3 class="text-lg font-semibold text-main">Linux — any distro</h3>
-        </div>
-        <p class="mb-4 mt-2 text-sm text-secondary">
-          One command. It detects your distro, adds the repo, installs the host and
-          web console, opens the firewall, and tells you how to pair.
-        </p>
-        <CodeBlock label="Shell" code={installCommands.linux} />
-        <p class="mt-3 text-xs text-secondary">
-          On Bazzite it installs as a systemd extension; on SteamOS it builds
-          on-device. NixOS users add the module to a flake instead.
-        </p>
+  {/* --------------------------------------------- Host + client pickers */}
+  <section class="container-page scroll-mt-24 pb-8">
+    <div data-reveal class="grid items-start gap-6 lg:grid-cols-2">
+      <div id="host" class="scroll-mt-24">
+        <GuidedInstaller />
       </div>
-
-      <div class="rounded-2xl border border-border bg-neutral-accent/40 p-6">
-        <div class="flex items-center gap-2.5">
-          <span class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-gradient-to-br from-neutral-highlight to-neutral-accent text-white shadow-inner">
-            <OsIcon name="windows" size={20} />
-          </span>
-          <h3 class="text-lg font-semibold text-main">Windows 11 (22H2+)</h3>
-        </div>
-        <p class="mb-4 mt-2 text-sm text-secondary">
-          A signed installer that includes Punktfunk's own display and gamepad
-          drivers. Via winget:
-        </p>
-        <CodeBlock label="PowerShell" code={installCommands.windows} />
-        <p class="mt-3 text-xs text-secondary">
-          Prefer a click-through installer? Grab <code>setup.exe</code> from the{" "}
-          <a href={`${links.docs}/docs/windows-host`} class="text-brand-light underline underline-offset-2">Windows host guide</a>.
-        </p>
+      <div>
+        <GuidedClient />
       </div>
     </div>
 
-    <p class="mt-6 flex items-center gap-2 text-sm text-secondary">
-      <Icon name="book-open" size={16} class="text-brand-light" />
-      Per-distro repo instructions (apt, dnf, pacman, Bazzite, NixOS, SteamOS) live in the{" "}
-      <a href={`${links.docs}/docs/install`} class="text-brand-light underline underline-offset-2">host install docs</a>.
-    </p>
-  </section>
-
-  {/* ------------------------------------------------------ Client guide */}
-  <section id="clients" class="container-page scroll-mt-24 py-8">
-    <div class="mb-8 flex items-center gap-3">
-      <span class="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-main">2</span>
-      <h2 class="text-2xl font-bold sm:text-3xl">Connect a client</h2>
-    </div>
-
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        clientApps.map((c) => (
-          <div class="flex items-start gap-4 rounded-2xl border border-border bg-neutral-accent/40 p-5">
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-neutral-highlight via-neutral-highlight to-brand/40 text-white shadow-lg shadow-black/30">
-              <OsIcon name={c.os} size={22} />
-            </div>
-            <div>
-              <h3 class="text-base font-semibold text-main">{c.device}</h3>
-              <p class="mt-1 text-sm text-secondary">{c.how}</p>
-            </div>
-          </div>
-        ))
-      }
-    </div>
-
-    <div class="mt-6 flex items-start gap-3 rounded-xl border border-border bg-neutral-highlight/30 px-5 py-4 text-sm text-secondary">
+    <div class="mx-auto mt-6 flex max-w-5xl items-start gap-3 rounded-xl border border-border bg-neutral-highlight/30 px-5 py-4 text-sm text-secondary">
       <Icon name="shield-check" size={18} class="mt-0.5 shrink-0 text-success" />
       <p>
         Every client discovers hosts on your network automatically. The first time,
@@ -118,40 +53,8 @@ import { installCommands } from "@/data/installer";
     </div>
   </section>
 
-  {/* --------------------------------------------------------- Mobile QR */}
-  <section class="container-page py-12">
-    <div class="rounded-[var(--radius-card)] border border-border bg-neutral-accent/50 p-8 sm:p-10">
-      <div class="mx-auto max-w-xl text-center">
-        <h2 class="text-2xl font-bold sm:text-3xl">Get the mobile apps</h2>
-        <p class="mt-3 text-secondary">
-          Point your phone's camera at a code to install the client.
-        </p>
-      </div>
-
-      <div class="mx-auto mt-9 grid max-w-2xl gap-5 sm:grid-cols-2">
-        {
-          mobileStores.map((store) => (
-            <a
-              href={store.href}
-              class="group flex flex-col items-center rounded-2xl border border-border bg-neutral p-6 text-center transition-colors hover:border-brand-light/60"
-            >
-              <div class="rounded-xl bg-white p-3 shadow-lg shadow-black/20">
-                <img src={store.qr} alt={`QR code to install the ${store.name} app`} width="150" height="150" class="h-[150px] w-[150px]" />
-              </div>
-              <div class="mt-4 flex items-center gap-2 text-white">
-                <OsIcon name={store.icon} size={20} />
-                <span class="font-semibold text-main">{store.label}</span>
-              </div>
-              <p class="mt-1 text-sm text-secondary">{store.note}</p>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
   {/* -------------------------------------------------------------- Help */}
-  <section class="container-page pb-24">
+  <section class="container-page py-12 pb-24">
     <div class="flex flex-col items-center gap-4 text-center">
       <p class="text-secondary">Stuck, or want the deep dive?</p>
       <div class="flex flex-wrap justify-center gap-3">

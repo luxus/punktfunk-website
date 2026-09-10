@@ -8,10 +8,13 @@
 export type HostPlatform = {
   id: string;
   name: string;
-  icon: string; // key under /public/os-icons
+  icon: string; // file stem under src/brand-icons/os
   family: "linux" | "windows";
   /** One-page guide for the manual / repo-add route. */
   doc: string;
+  /** False when the platform is NOT covered by the one-line script
+      (e.g. NixOS, which installs via a flake module instead). */
+  script?: boolean;
   /** Optional distro-specific note shown next to the generated command. */
   note?: string;
 };
@@ -94,6 +97,7 @@ export const hostPlatforms: HostPlatform[] = [
     name: "NixOS",
     icon: "nixos",
     family: "linux",
+    script: false,
     note: "Add the module to your flake instead of running the script.",
     doc: "https://docs.punktfunk.unom.io/docs/nixos",
   },
