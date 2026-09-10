@@ -124,7 +124,7 @@ export const compareRows: CompareRow[] = [
 /** Client apps and where to get them. */
 export type ClientApp = {
   device: string;
-  os: string; // icon key under /public/os-icons
+  os: string; // file stem under src/brand-icons/os
   how: string;
 };
 
